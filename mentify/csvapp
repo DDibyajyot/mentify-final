@@ -1,0 +1,233 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import date
+import os
+import mysql.connector
+from mysql.connector import Error
+py = sys.executable
+
+
+def addNewMember():
+    memail = int(input("Enter a Book ID: "))
+    m_name = input("Enter Book Title: ")
+    m_gender = input("Enter name of author of the book: ")
+    m_age = input("Enter name of publishing house: ")
+    m_relationship = input()
+    genre = input("Enter genre of book: ")
+    dbf =
+    cnt = dbf["bkid"].count()
+    dbf.at[cnt] = [bkid, title, author, publisher, cost, genre]
+    dbf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv", index=False)
+    print("Member added successfully")
+    print(dbf)
+
+
+def searchMember():
+    title = input("Enter the Member Name: ")
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv")
+    bf = dbf.loc[dbf["title"] == title]
+    if bf.empty:
+        print("No Member found with given name")
+    else:
+        print("Member details are: ")
+        print(bf)
+
+
+def deleteMember():
+    bkid = float(input("Enter the Member id: "))
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv")
+    dbf = dbf.drop(dbf[dbf["bkid"] == bkid].index)
+    dbf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv", index=False)
+    print("Member Deleted Successfully")
+    print(dbf)
+
+
+def showMembers():
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv")
+    print(dbf)
+
+
+def addNewMember():
+    memid = int(input("Enter a new member ID: "))
+    m_name = input("ENter New Member Name: ")
+    phoneno = int(input("Enter Phone Number: "))
+    numberbkissued = int(input("Enter the number of Members issued: "))
+    mdf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv")
+    n = mdf["memid"].count()
+    mdf.at[n] = [memid, m_name, phoneno, numberbkissued]
+    mdf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv")
+    print("New Member added Successfully")
+    print(mdf)
+
+
+def searchMember():
+    m_name = input("Enter the member name: ")
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv")
+    df = dbf.loc[dbf["m_name"] == m_name]
+    if df.empty:
+        print("No member found with given name")
+    else:
+        print("Member Details are: ")
+        print(df)
+
+
+def deleteMember():
+    memid = float(input("Enter the member id: "))
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv")
+    dbf = dbf.drop(dbf[dbf["memid"] == memid].index)
+    dbf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv", index=False)
+    print("Member Deleted Successfully")
+    print(dbf)
+
+
+def showMembers():
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\member.csv")
+    print(dbf)
+
+
+def issueMembers():
+    bk_name = input("Enter the Member Name: ")
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv")
+    dbf = dbf.loc[dbf["title"] == bk_name]
+    if dbf.empty:
+        print("No Member with given name found in the library")
+        return
+
+    iss_name = input("Enter Member Name: ")
+    mdf = pd.read_csv((r"C:\Users\Leepa\Desktop\Info Project\member.csv"))
+    mdf = mdf.loc[mdf["m_name"] == iss_name]
+    if mdf.empty:
+        print("No such member found")
+        return
+
+    date_issue = print("Date of Issue is: ", date.today())
+    numissueweek = int(input("Number of Member issued: "))
+    dbf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv")
+    n = dbf["bk_name"].count()
+    dbf.at[n] = [bk_name, iss_name, date.today(), numissueweek, ""]
+    dbf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv", index=False)
+    print("Member Issued Successfully")
+    print(dbf)
+
+
+def returnMember():
+    iss_name = input("Enter the Member Name: ")
+    bk_name = input("Enter the Member name: ")
+    idf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv")
+    idf = idf.loc[idf["bk_name"] == bk_name]
+    if idf.empty:
+        print("The Member is not issued in records")
+    else:
+        idf = idf.loc[idf["iss_name"] == iss_name]
+        if idf.empty:
+            print("The Member is not issued to the specified member")
+        else:
+            print("Member can be returned")
+            ans = input("Are you sure you want to return the Member back to the library: yes/no ")
+            if ans.lower() == "yes":
+                idf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv")
+                idf = idf.drop(idf[idf["bk_name"] == bk_name].index)
+                idf.to_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv", index=False)
+                print("Member returned successfully")
+            else:
+                print("Member return operation cancelled")
+
+
+def showIssueMembers():
+    idf = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv")
+    print(idf)
+
+
+def showCharts():
+
+    print("Press 1 for Members and their Cost")
+    print("Press 2 for Number of Members Issued by members")
+    on = int(input("Enter your number: "))
+    if on == 1:
+        df = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\Member.csv")
+        df = df[["title", "cost"]]
+        df.plot("title", "cost", kind='bar')
+        plt.xlabel("Title")
+        plt.ylabel("Cost")
+        plt.show()
+
+    if on == 2:
+        df = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\issueMembers.csv")
+        df = df[["numissueweek", "iss_name"]]
+        df.plot(kind='bar', colour="red")
+        plt.show()
+
+
+def login():
+    usname = input("Enter Username: ")
+    pwd = input("Enter Password: ")
+    df = pd.read_csv(r"C:\Users\Leepa\Desktop\Info Project\users.csv")
+    df = df.loc[df["username"] == usname]
+    if df.empty:
+        print("Invalid Username Provided")
+        return False
+    else:
+        df = df.loc[df["password"] == pwd]
+        if df.empty:
+            print("Invalid Password provided")
+            return False
+        else:
+            print("Username and Password verified successfully")
+            return True
+
+
+def showMenu():
+    print("--------------------------------------------------------------------------------------------------")
+    print("                          INTERNATIONAL DIGITAL LIBRARY ASSOCIATION                               ")
+    print("--------------------------------------------------------------------------------------------------")
+    print("Press 1 -> Add a New Member to Catalog")
+    print("Press 2 -> Search for a Member in the Catalog ")
+    print("Press 3 -> Delete a Member from the Catalog")
+    print("Press 4 -> Display all Members in the Catalog")
+    print("Press 5 -> Add new member")
+    print("Press 6 -> Search for a member")
+    print("Press 7 -> Delete a member")
+    print("Press 8 -> Display all members")
+    print("Press 9 -> Issue a Member")
+    print("Press 10 -> Return a Member")
+    print("Press 11 -> Show all Issued Members")
+    print("Press 12 -> To view Charts")
+    print("Press 13 -> To exit")
+    choice = int(input("Enter your Choice: "))
+    return choice
+
+
+if login():
+    while True:
+        choice = showMenu()
+        if choice == 1:
+            addNewMember()
+        elif choice == 2:
+            searchMember()
+        elif choice == 3:
+            deleteMember()
+        elif choice == 4:
+            showBooks()
+        elif choice == 5:
+            addNewMember()
+        elif choice == 6:
+            searchMember()
+        elif choice == 7:
+            deleteMember()
+        elif choice == 8:
+            showMembers()
+        elif choice == 9:
+            issueBooks()
+        elif choice == 10:
+            returnBook()
+        elif choice == 11:
+            showIssueBooks()
+        elif choice == 12:
+            showCharts()
+
+        elif choice == 13:
+            break
+        else:
+            print("Invalid Option Selected...")
+
+print("Thank you for your time and for using the Digital Library Management System")
