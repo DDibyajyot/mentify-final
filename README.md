@@ -1,3 +1,3 @@
 # mentify-final
 In progress
-## not completed
+## not completed - required a lot of work 
